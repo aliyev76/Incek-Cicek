@@ -78,3 +78,4 @@ exports.handler = async (event, context) => {
     return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
+// Triggering redeploy with new env vars
