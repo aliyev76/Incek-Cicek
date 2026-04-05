@@ -42,14 +42,22 @@ export default function CartPage() {
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleCheckout = async (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const customerData = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      address: formData.get('address') as string,
+    };
 
     try {
       const res = await fetch("/.netlify/functions/payment", {
         method: "POST",
-        body: JSON.stringify({ cart, customer }),
+        body: JSON.stringify({ cart, customer: customerData }),
       });
       const data = await res.json();
       
@@ -140,6 +148,7 @@ export default function CartPage() {
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Ad Soyad</label>
                     <input 
+                      name="name"
                       required
                       className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-primary outline-none transition-all"
                       value={customer.name}
@@ -150,6 +159,7 @@ export default function CartPage() {
                     <div>
                       <label className="block text-xs font-bold text-gray-500 uppercase mb-1">E-posta</label>
                       <input 
+                        name="email"
                         required
                         type="email"
                         className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-primary outline-none transition-all"
@@ -160,6 +170,7 @@ export default function CartPage() {
                     <div>
                       <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Telefon</label>
                       <input 
+                        name="phone"
                         required
                         className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-primary outline-none transition-all"
                         value={customer.phone}
@@ -170,6 +181,7 @@ export default function CartPage() {
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Teslimat Adresi</label>
                     <textarea 
+                      name="address"
                       required
                       rows={3}
                       className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-primary outline-none transition-all resize-none"
