@@ -36,32 +36,43 @@ exports.handler = async (event, context) => {
 
     if (orderError) throw orderError;
 
-    // Shopier requires specific fields. This is a simplified version of the logic.
-    // In a real implementation, you'd follow their specific PHP-to-JS port for signature.
+    // Shopier requires specific fields.
+    // For this implementation, we will use the standard Shopier API payment flow.
+    const currency = '0'; // 0 for TL
+    const randomNr = Math.floor(Math.random() * 1000000).toString();
+    const callbackUrl = `${process.env.URL || 'https://incekbeytepecicek.com'}/.netlify/functions/callback`;
     
-    // Example signature logic: order_id + total_amount + callback_url + secret
-    // Shopier specific data structure
-    const callbackUrl = `${process.env.URL || 'http://localhost:8888'}/.netlify/functions/callback`;
-    
-    // In a production app, you'd use a more specific Shopier logic.
-    // For this clone, we'll ensure the payload is richer.
-    const signatureData = `${orderId}${totalAmount}${callbackUrl}${customer.email}`;
+    // In Shopier Standard API, the signature is often: random_nr + order_id + total_amount + currency
+    const dataToSign = `${randomNr}${orderId}${totalAmount}${currency}`;
     const hmac = crypto.createHmac('sha256', apiSecret);
-    hmac.update(signatureData);
+    hmac.update(dataToSign);
     const signature = hmac.digest('base64');
 
-    // Return the payment URL simulation
-    const paymentUrl = `https://www.shopier.com/ShowProduct/api_pay.php?api_key=${apiKey}&order_id=${orderId}&amount=${totalAmount}&signature=${encodeURIComponent(signature)}&email=${encodeURIComponent(customer.email)}`;
+    // Prepare fields for POST
+    const fields = {
+      api_key: apiKey,
+      order_id: orderId,
+      amount: totalAmount.toString(),
+      currency: currency,
+      random_nr: randomNr,
+      signature: signature,
+      callback_url: callbackUrl,
+      customer_email: customer.email,
+      customer_name: customer.name,
+      customer_phone: customer.phone,
+      customer_address: customer.address
+    };
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        url: paymentUrl,
+        fields: fields,
         orderId: orderId,
         message: 'Order created successfully'
       }),
     };
   } catch (error) {
+    console.error('Payment preparation error:', error);
     return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };

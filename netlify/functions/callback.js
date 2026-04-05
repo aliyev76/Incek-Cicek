@@ -21,7 +21,8 @@ exports.handler = async (event, context) => {
       random_nr: randomNr,
       platform_order_id: orderId, 
       total_order_value: totalAmount,
-      status 
+      status,
+      currency = '0'
     } = data;
 
     const apiSecret = process.env.SHOPIER_API_SECRET;
@@ -32,19 +33,14 @@ exports.handler = async (event, context) => {
     }
 
     // 1. Verify signature
+    // Data string order: random_nr + platform_order_id + total_order_value + currency
     const dataString = `${randomNr}${orderId}${totalAmount}`;
-    const expectedSignature = crypto
-      .createHmac('sha256', apiSecret)
-      .update(dataString, 'utf8')
-      .digest('base64');
+    const hmac = crypto.createHmac('sha256', apiSecret);
+    hmac.update(dataString, 'utf8');
+    const expectedSignature = hmac.digest('base64');
 
-    const isValid = crypto.timingSafeEqual(
-      Buffer.from(receivedSignature, 'base64'),
-      Buffer.from(expectedSignature, 'base64')
-    );
-
-    if (!isValid) {
-      console.error(`Invalid signature for order ${orderId}`);
+    if (receivedSignature !== expectedSignature) {
+      console.error(`Invalid signature for order ${orderId}. Expected: ${expectedSignature}, Received: ${receivedSignature}`);
       return { statusCode: 403, body: 'Invalid signature' };
     }
     

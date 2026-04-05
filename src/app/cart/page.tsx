@@ -52,8 +52,23 @@ export default function CartPage() {
         body: JSON.stringify({ cart, customer }),
       });
       const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
+      
+      if (data.fields) {
+        // Create a temporary form and submit it via POST
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://www.shopier.com/ShowProduct/api_pay.php';
+        
+        Object.entries(data.fields).forEach(([key, value]) => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = value as string;
+          form.appendChild(input);
+        });
+        
+        document.body.appendChild(form);
+        form.submit();
       }
     } catch (err) {
       console.error("Payment failed", err);
