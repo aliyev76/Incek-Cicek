@@ -38,12 +38,14 @@ exports.handler = async (event, context) => {
 
     // Shopier requires specific fields.
     // For this implementation, we will use the standard Shopier API payment flow.
+    const formattedAmount = totalAmount.toFixed(2);
+    const orderId = Date.now().toString(); // Use numeric ID
     const currency = '0'; // 0 for TL
     const randomNr = Math.floor(Math.random() * 1000000).toString();
     const callbackUrl = `${process.env.URL || 'https://incekbeytepecicek.com'}/.netlify/functions/callback`;
     
-    // In Shopier Standard API, the signature is often: random_nr + order_id + total_amount + currency
-    const dataToSign = `${randomNr}${orderId}${totalAmount}${currency}`;
+    // In Shopier Standard API, the signature is: random_nr + order_id + formatted_amount + currency
+    const dataToSign = `${randomNr}${orderId}${formattedAmount}${currency}`;
     const hmac = crypto.createHmac('sha256', apiSecret);
     hmac.update(dataToSign);
     const signature = hmac.digest('base64');
@@ -52,7 +54,7 @@ exports.handler = async (event, context) => {
     const fields = {
       api_key: apiKey,
       order_id: orderId,
-      amount: totalAmount.toString(),
+      amount: formattedAmount,
       currency: currency,
       random_nr: randomNr,
       signature: signature,
