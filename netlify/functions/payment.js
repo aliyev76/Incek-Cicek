@@ -14,8 +14,9 @@ exports.handler = async (event, context) => {
   try {
     const { cart, customer } = JSON.parse(event.body);
     const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const orderId = `ORD-${Date.now()}`;
-
+    const formattedAmount = totalAmount.toFixed(2);
+    const orderId = Date.now().toString(); // Use numeric ID for both Supabase and Shopier
+    
     // Shopier Auth
     const apiKey = process.env.SHOPIER_API_KEY;
     const apiSecret = process.env.SHOPIER_API_SECRET;
@@ -36,10 +37,6 @@ exports.handler = async (event, context) => {
 
     if (orderError) throw orderError;
 
-    // Shopier requires specific fields.
-    // For this implementation, we will use the standard Shopier API payment flow.
-    const formattedAmount = totalAmount.toFixed(2);
-    const orderId = Date.now().toString(); // Use numeric ID
     const currency = '0'; // 0 for TL
     const randomNr = Math.floor(Math.random() * 1000000).toString();
     const callbackUrl = `${process.env.URL || 'https://incekbeytepecicek.com'}/.netlify/functions/callback`;
