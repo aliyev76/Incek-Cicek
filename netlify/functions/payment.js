@@ -60,7 +60,10 @@ exports.handler = async (event, context) => {
       customer_email: customer.email,
       customer_name: customer.name,
       customer_phone: customer.phone,
-      customer_address: customer.address
+      customer_address: customer.address,
+      website_index: '1',
+      product_name: 'Çiçek Siparişi',
+      product_type: '0'
     };
 
     return {
