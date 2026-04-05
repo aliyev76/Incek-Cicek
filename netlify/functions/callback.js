@@ -34,7 +34,7 @@ exports.handler = async (event, context) => {
 
     // 1. Verify signature
     // Data string order: random_nr + platform_order_id + total_order_value + currency
-    const dataString = `${randomNr}${orderId}${totalAmount}`;
+    const dataString = `${randomNr}${orderId}${totalAmount}${currency}`;
     const hmac = crypto.createHmac('sha256', apiSecret);
     hmac.update(dataString, 'utf8');
     const expectedSignature = hmac.digest('base64');
