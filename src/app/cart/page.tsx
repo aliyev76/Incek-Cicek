@@ -65,7 +65,7 @@ export default function CartPage() {
         // Create a temporary form and submit it via POST
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = 'https://www.shopier.com/ShowProduct/api_pay.php';
+        form.action = 'https://www.shopier.com/ShowProduct/api_pay4.php';
         
         Object.entries(data.fields).forEach(([key, value]) => {
           const input = document.createElement('input');
