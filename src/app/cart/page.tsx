@@ -62,7 +62,16 @@ export default function CartPage() {
   };
 
   const handleWhatsApp = () => {
-    const message = encodeURIComponent(`${tp.waMessage} ${customer.name}\n\nSipariş Detayı:\n${cart.map(item => `- ${item.name} (${item.quantity} adet)`).join('\n')}\n\nToplam: ${total.toLocaleString('tr-TR')} TL`);
+    const message = encodeURIComponent(
+      `${tp.waMessage} ${customer.name}\n\n` +
+      `👤 Müşteri Bilgileri:\n` +
+      `- Ad Soyad: ${customer.name}\n` +
+      `- E-posta: ${customer.email}\n` +
+      `- Telefon: ${customer.phone}\n` +
+      `- Adres: ${customer.address}\n\n` +
+      `💐 Sipariş Detayı:\n${cart.map(item => `- ${item.name} (${item.quantity} adet)`).join('\n')}\n\n` +
+      `💰 Toplam: ${total.toLocaleString('tr-TR')} TL`
+    );
     window.open(`https://wa.me/${tp.supportPhone}?text=${message}`, '_blank');
   };
 
