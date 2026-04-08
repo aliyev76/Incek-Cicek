@@ -23,12 +23,10 @@ export default function CartPage() {
   const tp = translations.tr.payment;
 
   useEffect(() => {
-    // In a real app, load from localStorage
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
       setCart(JSON.parse(savedCart));
     } else {
-      // Mock cart for demo if empty
       setCart([
         { id: "1", name: "Aşkın Büyüsü 21 Kırmızı Gül", price: 1500, quantity: 1, image_url: "https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=200" }
       ]);
@@ -50,8 +48,6 @@ export default function CartPage() {
   const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Simulate order placement
     setTimeout(() => {
       setShowIBAN(true);
       setLoading(false);
@@ -67,7 +63,7 @@ export default function CartPage() {
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent(`${tp.waMessage} ${customer.name}\n\nSipariş Detayı:\n${cart.map(item => `- ${item.name} (${item.quantity} adet)`).join('\n')}\n\nToplam: ${total.toLocaleString('tr-TR')} TL`);
-    window.open(`https://wa.me/905441334406?text=${message}`, '_blank');
+    window.open(`https://wa.me/${tp.supportPhone}?text=${message}`, '_blank');
   };
 
   return (

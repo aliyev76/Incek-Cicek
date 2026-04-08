@@ -61,6 +61,7 @@ export const translations = {
       accountHolder: "Muhammed Raşit Enes Akbulut",
       iban: "TR68 0006 2000 7100 0006 8219 34",
       bankName: "Kuveyt Türk",
+      supportPhone: "905411090941",
       confirmWhatsApp: "Ödemeyi Yaptım, Onayla",
       waMessage: "Merhaba, siparişim için ödemeyi yaptım. Dekontu ekte bulabilirsiniz. Ad Soyad: ",
     }
