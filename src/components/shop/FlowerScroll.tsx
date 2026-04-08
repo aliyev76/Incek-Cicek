@@ -71,7 +71,7 @@ const FlowerScroll = () => {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Contain logic (keep image inside viewport preserving aspect ratio)
+    // Cover logic (fill viewport, crop if necessary)
     const canvasWidth = canvas.width / window.devicePixelRatio;
     const canvasHeight = canvas.height / window.devicePixelRatio;
     
@@ -80,16 +80,19 @@ const FlowerScroll = () => {
     
     let drawWidth, drawHeight, x, y;
 
+    // "Cover" logic
     if (canvasRatio > imgRatio) {
+      // Canvas is wider than image aspect ratio, so we scale by width and crop top/bottom
+      drawWidth = canvasWidth;
+      drawHeight = canvasWidth / imgRatio;
+      x = 0;
+      y = (canvasHeight - drawHeight) / 2;
+    } else {
+      // Canvas is taller than image aspect ratio (mobile), so we scale by height and crop sides
       drawHeight = canvasHeight;
       drawWidth = drawHeight * imgRatio;
       x = (canvasWidth - drawWidth) / 2;
       y = 0;
-    } else {
-      drawWidth = canvasWidth;
-      drawHeight = drawWidth / imgRatio;
-      x = 0;
-      y = (canvasHeight - drawHeight) / 2;
     }
 
     ctx.drawImage(img, x, y, drawWidth, drawHeight);
@@ -148,7 +151,7 @@ const FlowerScroll = () => {
         
         <canvas 
           ref={canvasRef} 
-          className="block w-full h-full object-contain pointer-events-none"
+          className="block w-full h-full object-cover pointer-events-none"
         />
 
         {/* Text Overlays - Fading in and out */}
