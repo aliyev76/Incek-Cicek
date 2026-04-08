@@ -113,7 +113,7 @@ const Footer = () => {
 
           <div className="flex items-center gap-2 group">
              <span className="text-[10px] text-white/30 font-bold uppercase tracking-widest group-hover:text-white/60 transition-colors">Designed by</span>
-             <span className="font-serif font-black text-white text-sm group-hover:text-primary transition-colors">gaga<span className="text-primary group-hover:text-white transition-colors">soft</span></span>
+             <span className="font-serif font-black text-white text-sm group-hover:text-primary transition-colors uppercase tracking-widest">aliyev</span>
           </div>
         </div>
       </div>
