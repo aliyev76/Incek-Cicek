@@ -28,7 +28,7 @@ const SingleFlower = ({ delay, angle, distance, image, scale }: { delay: number,
       <img 
         src={image} 
         alt="Flower" 
-        className="w-20 h-20 object-contain mix-blend-screen drop-shadow-2xl filter brightness-110 contrast-125"
+        className="w-12 h-12 md:w-20 md:h-20 object-contain mix-blend-screen drop-shadow-2xl filter brightness-110 contrast-125"
       />
     </motion.div>
   );
@@ -41,7 +41,8 @@ export const InteractiveBouquet = () => {
 
   useEffect(() => {
     setMounted(true);
-    const flowerCount = 16;
+    const isMobile = window.innerWidth < 768;
+    const flowerCount = isMobile ? 8 : 16;
     const flowerImages = [
       "/flower-red.png",
       "/flower-white.png",
@@ -49,11 +50,14 @@ export const InteractiveBouquet = () => {
       "/flower-foliage.png"
     ];
 
+    const baseDistance = isMobile ? 100 : 160;
+    const spread = isMobile ? 40 : 80;
+
     const newFlowers = Array.from({ length: flowerCount }).map((_, i) => ({
       angle: (i * 2 * Math.PI) / flowerCount,
       delay: i * 0.03,
-      distance: 160 + Math.random() * 80,
-      scale: 0.6 + Math.random() * 0.8,
+      distance: baseDistance + Math.random() * spread,
+      scale: (isMobile ? 0.4 : 0.6) + Math.random() * 0.8,
       image: flowerImages[Math.floor(Math.random() * flowerImages.length)]
     }));
     setFlowers(newFlowers);
@@ -76,6 +80,11 @@ export const InteractiveBouquet = () => {
       className="relative w-full h-full flex items-center justify-center cursor-pointer group/bouquet"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => {
+        if (window.innerWidth < 1024) {
+          setIsHovered(!isHovered);
+        }
+      }}
     >
       {/* Background Glow */}
       <motion.div 

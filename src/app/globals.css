@@ -78,6 +78,13 @@
   transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+@media (max-width: 768px) {
+  .reveal {
+    transform: translateY(20px);
+    transition-duration: 0.5s;
+  }
+}
+
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
@@ -97,8 +104,27 @@ body {
   color: var(--foreground);
   scroll-behavior: smooth;
   overflow-x: hidden;
+  width: 100%;
+}
+
+/* Fix for mobile perspective and scrolling */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+@media (max-width: 1024px) {
+  .perspective-1000 {
+    perspective: none; /* Disable 3D perspective on mobile to avoid layout issues */
+  }
 }
 
 .font-serif {
   font-family: var(--font-serif);
+}
+
+/* Mobile-first utility for hiding heavy animations */
+@media (max-width: 640px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
 }

@@ -33,11 +33,13 @@ export const Hero3DFlowers = ({ children }: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     setMounted(true);
-    const newPetals = Array.from({ length: 12 }).map((_, i) => ({
+    const isMobile = window.innerWidth < 1024;
+    const count = isMobile ? 6 : 12;
+    const newPetals = Array.from({ length: count }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: 20 + Math.random() * 40,
+      size: (isMobile ? 15 : 20) + Math.random() * 40,
       duration: 15 + Math.random() * 20,
       delay: Math.random() * 10,
       rotateZ: Math.random() * 360,

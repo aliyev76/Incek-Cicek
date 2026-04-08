@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
+import { translations } from "@/lib/i18n/translations";
 
 const categories = [
   { name: "Tüm Ürünler", href: "/", hasSub: true },
@@ -15,10 +16,30 @@ const categories = [
 ];
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeSub, setActiveSub] = useState<string | null>(null);
+  const t = translations.tr.nav;
+
   return (
-    <nav className="w-full bg-white border-b border-border sticky top-[112px] z-50">
+    <nav className="w-full bg-white border-b border-border sticky top-0 md:top-[112px] z-50">
       <div className="container mx-auto px-4">
-        <ul className="flex items-center justify-center gap-2">
+        {/* Mobile Menu Toggle */}
+        <div className="flex md:hidden items-center justify-between py-4">
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-2 text-secondary font-bold uppercase tracking-widest text-xs"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? t.close : t.menu}
+          </button>
+          
+          <Link href="/cart" className="text-secondary hover:text-primary transition-colors">
+            <span className="text-[10px] font-black tracking-widest uppercase">{t.cart}</span>
+          </Link>
+        </div>
+
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex items-center justify-center gap-2">
           {categories.map((category) => (
             <li key={category.name} className="group relative">
               <Link
@@ -48,6 +69,44 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
+
+        {/* Mobile Menu Content */}
+        {isOpen && (
+          <div className="md:hidden bg-white border-t border-border py-4 max-h-[70vh] overflow-y-auto">
+            <ul className="flex flex-col gap-1">
+              {categories.map((category) => (
+                <li key={category.name} className="flex flex-col">
+                  <div className="flex items-center justify-between px-4 py-3">
+                    <Link
+                      href={category.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-sm font-bold uppercase tracking-widest text-secondary hover:text-primary"
+                    >
+                      {category.name}
+                    </Link>
+                    {category.hasSub && (
+                      <button 
+                        onClick={() => setActiveSub(activeSub === category.name ? null : category.name)}
+                        className="p-2 text-secondary"
+                      >
+                        <ChevronDown size={18} className={`${activeSub === category.name ? 'rotate-180' : ''} transition-transform`} />
+                      </button>
+                    )}
+                  </div>
+                  
+                  {category.hasSub && activeSub === category.name && (
+                    <div className="bg-muted/30 py-2 border-y border-border/50">
+                      <Link href="/category/yeni-bebek" onClick={() => setIsOpen(false)} className="block px-8 py-2.5 text-xs font-bold text-secondary/70 uppercase tracking-wider">Yeni Bebek</Link>
+                      <Link href="/category/anneye-hediye" onClick={() => setIsOpen(false)} className="block px-8 py-2.5 text-xs font-bold text-secondary/70 uppercase tracking-wider">Anneye Hediye</Link>
+                      <Link href="/category/sevgiliye" onClick={() => setIsOpen(false)} className="block px-8 py-2.5 text-xs font-bold text-secondary/70 uppercase tracking-wider">Sevgiliye</Link>
+                      <Link href="/category/dogum-gunu" onClick={() => setIsOpen(false)} className="block px-8 py-2.5 text-xs font-bold text-secondary/70 uppercase tracking-wider">Doğum Günü</Link>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </nav>
   );

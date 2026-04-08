@@ -2,8 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from "framer-motion";
+import { translations } from "@/lib/i18n/translations";
 
 const FlowerScroll = () => {
+  const t = translations.tr.home; // Defaulting to TR for now as per rules
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
@@ -22,28 +24,30 @@ const FlowerScroll = () => {
     restDelta: 0.001
   });
 
-  // Map 0-1 progress to frame index 1-192 (matching 00001.png to 00192.png)
-  const frameIndex = useTransform(smoothProgress, [0, 1], [1, 192]);
+  // Map 0-1 progress to frame index 0-47 (matching the reduced frame set)
+  const frameIndex = useTransform(smoothProgress, [0, 1], [0, 47]);
 
   // Preloading images into memory
   useEffect(() => {
     const preloadImages = async () => {
       const loadedImages: HTMLImageElement[] = [];
       let loadedCount = 0;
+      const step = 4; // Load every 4th frame to reduce 480MB payload by 75%
       const totalFrames = 192;
+      const framesToLoad = Math.floor(totalFrames / step);
 
-      for (let i = 1; i <= totalFrames; i++) {
+      for (let i = 1; i <= totalFrames; i += step) {
         const img = new Image();
         img.src = `/Photosanimate/${i.toString().padStart(5, '0')}.png`;
         img.onload = () => {
           loadedCount++;
-          if (loadedCount === totalFrames) {
+          if (loadedCount === framesToLoad) {
             setIsLoading(false);
           }
         };
         img.onerror = () => {
           console.error(`Failed to load image: ${img.src}`);
-          loadedCount++; // Still count it to prevent stuck loader
+          loadedCount++; 
         };
         loadedImages.push(img);
       }
@@ -59,8 +63,8 @@ const FlowerScroll = () => {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx || images.length === 0) return;
 
-    const imgIndex = Math.max(1, Math.min(192, Math.floor(index)));
-    const img = images[imgIndex - 1];
+    const imgIndex = Math.max(0, Math.min(47, Math.floor(index)));
+    const img = images[imgIndex];
     
     if (!img || !img.complete) return;
 
@@ -138,7 +142,7 @@ const FlowerScroll = () => {
         {isLoading && (
           <div className="absolute z-50 flex flex-col items-center gap-4">
             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-            <span className="text-secondary font-black tracking-[0.2em] uppercase text-[10px]">Asaleti Yüklüyoruz...</span>
+            <span className="text-secondary font-black tracking-[0.2em] uppercase text-[10px]">{t.loadingAnimation}</span>
           </div>
         )}
         
@@ -156,10 +160,10 @@ const FlowerScroll = () => {
             }}
             className="absolute top-1/4 left-8 md:left-20 max-w-sm"
           >
-            <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block">Safiyet</span>
-            <h3 className="text-4xl md:text-7xl font-serif font-black text-secondary leading-tight">Doğanın En <span className="text-primary italic">Saf</span> Dokunuşu</h3>
+            <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block">{t.scrollPurity}</span>
+            <h3 className="text-4xl md:text-7xl font-serif font-black text-secondary leading-tight">{t.scrollPurityTitle.split('Saf')[0]}<span className="text-primary italic">Saf</span>{t.scrollPurityTitle.split('Saf')[1]}</h3>
             <div className="w-12 h-[2px] bg-primary mt-6 mb-4" />
-            <p className="text-secondary/60 text-xs md:text-sm leading-relaxed uppercase tracking-widest font-bold">Her detayda gizlenmiş bir hikaye, her yaprakta bir sevgi mesajı.</p>
+            <p className="text-secondary/60 text-xs md:text-sm leading-relaxed uppercase tracking-widest font-bold">{t.scrollPurityDesc}</p>
           </motion.div>
 
           <motion.div 
@@ -169,10 +173,10 @@ const FlowerScroll = () => {
             }}
             className="absolute top-1/2 right-8 md:right-20 -translate-y-1/2 text-right max-w-sm"
           >
-            <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block">Zarafet</span>
-            <h3 className="text-4xl md:text-7xl font-serif font-black text-secondary leading-tight">Premium <span className="text-primary italic">Sanat</span></h3>
+            <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block">{t.scrollElegance}</span>
+            <h3 className="text-4xl md:text-7xl font-serif font-black text-secondary leading-tight">{t.scrollEleganceTitle.split('Sanat')[0]}<span className="text-primary italic">Sanat</span>{t.scrollEleganceTitle.split('Sanat')[1]}</h3>
             <div className="w-12 h-[2px] bg-primary mt-6 mb-4 ml-auto" />
-            <p className="text-secondary/60 text-xs md:text-sm leading-relaxed uppercase tracking-widest font-bold">Usta eller tarafından hazırlanan, görsel şölen sunan aranjmanlar.</p>
+            <p className="text-secondary/60 text-xs md:text-sm leading-relaxed uppercase tracking-widest font-bold">{t.scrollEleganceDesc}</p>
           </motion.div>
 
           <motion.div 
@@ -182,10 +186,10 @@ const FlowerScroll = () => {
             }}
             className="absolute bottom-1/4 left-1/2 -translate-x-1/2 text-center max-w-xl"
           >
-            <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block">Deneyim</span>
-            <h3 className="text-4xl md:text-7xl font-serif font-black text-secondary leading-tight">Sizin İçin <span className="text-primary italic">Özel</span></h3>
+            <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] mb-3 block">{t.scrollExperience}</span>
+            <h3 className="text-4xl md:text-7xl font-serif font-black text-secondary leading-tight">{t.scrollExperienceTitle.split('Özel')[0]}<span className="text-primary italic">Özel</span>{t.scrollExperienceTitle.split('Özel')[1]}</h3>
             <div className="w-12 h-[2px] bg-primary mt-6 mb-4 mx-auto" />
-            <p className="text-secondary/60 text-xs md:text-sm leading-relaxed uppercase tracking-widest font-bold uppercase">İncek Çiçek kalitesiyle, en değerli anlarınıza eşlik ediyoruz.</p>
+            <p className="text-secondary/60 text-xs md:text-sm leading-relaxed uppercase tracking-widest font-bold uppercase">{t.scrollExperienceDesc}</p>
           </motion.div>
         </div>
       </div>

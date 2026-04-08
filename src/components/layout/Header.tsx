@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Search, ShoppingCart, User, Truck, Globe } from "lucide-react";
+import { translations } from "@/lib/i18n/translations";
 
 const Header = () => {
   const [cartCount, setCartCount] = React.useState(0);
@@ -40,7 +41,7 @@ const Header = () => {
               <span className="text-3xl filter drop-shadow-sm group-hover:scale-110 transition-transform duration-300 block">🌸</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-primary font-serif font-black text-2xl tracking-tighter leading-none group-hover:text-primary-dark transition-colors">
+              <span className="text-secondary font-serif font-black text-xl md:text-2xl tracking-tighter leading-none group-hover:text-primary-dark transition-colors">
                 İNCEK ÇİÇEK
               </span>
               <span className="text-[10px] text-secondary font-bold tracking-[0.3em] uppercase opacity-70">
@@ -72,7 +73,7 @@ const Header = () => {
           <Link href="/cart" className="relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted text-secondary hover:text-primary transition-all group">
             <ShoppingCart size={20} />
             {cartCount > 0 && (
-              <span className="absolute top-1 right-1 bg-primary text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
+              <span className="absolute -top-1 -right-1 bg-primary text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
                 {cartCount}
               </span>
             )}
