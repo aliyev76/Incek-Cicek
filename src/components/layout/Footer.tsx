@@ -66,8 +66,9 @@ const Footer = () => {
             <ul className="space-y-4 text-[13px] font-medium text-white/50">
               <li><Link href="/about" className="hover:text-white transition-colors">Hikayemiz</Link></li>
               <li><Link href="/delivery" className="hover:text-white transition-colors">Teslimat Bilgileri</Link></li>
-              <li><Link href="/privacy" className="hover:text-white transition-colors">Gizlilik Politikası</Link></li>
-              <li><Link href="/refund" className="hover:text-white transition-colors">Mesafeli Satış Sözleşmesi</Link></li>
+              <li><Link href="/legal/gizlilik-politikasi" className="hover:text-white transition-colors">Gizlilik Politikası</Link></li>
+              <li><Link href="/legal/mesafeli-satis-sozlesmesi" className="hover:text-white transition-colors">Mesafeli Satış Sözleşmesi</Link></li>
+              <li><Link href="/legal/iptal-iade-kosullari" className="hover:text-white transition-colors">İptal ve İade Koşulları</Link></li>
             </ul>
           </div>
 
