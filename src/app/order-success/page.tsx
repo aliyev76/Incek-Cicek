@@ -4,6 +4,7 @@ import React, { useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, ShoppingBag, ChevronRight } from "lucide-react";
+import Script from "next/script";
 import Header from "@/components/layout/Header";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -48,6 +49,16 @@ function OrderSuccessContent() {
 
   return (
     <div className="flex-grow bg-gray-50 py-20">
+      <Script id="google-ads-purchase" strategy="afterInteractive">
+        {`
+          gtag('event', 'conversion', {
+              'send_to': 'AW-18076783012/KkHUCLLtp5kcEKSj16tD',
+              'value': 1.0,
+              'currency': 'TRY',
+              'transaction_id': '${orderId || ""}'
+          });
+        `}
+      </Script>
       <div className="container mx-auto px-4 max-w-2xl text-center">
         <div className="bg-white rounded-3xl shadow-xl p-12 border border-gray-100">
           <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
