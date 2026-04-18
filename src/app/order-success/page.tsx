@@ -13,6 +13,7 @@ import confetti from "canvas-confetti";
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
+  const total = searchParams.get("total") || "1.0";
 
   useEffect(() => {
     // Trigger confetti on mount
@@ -53,7 +54,7 @@ function OrderSuccessContent() {
         {`
           gtag('event', 'conversion', {
               'send_to': 'AW-18076783012/KkHUCLLtp5kcEKSj16tD',
-              'value': 1.0,
+              'value': ${total},
               'currency': 'TRY',
               'transaction_id': '${orderId || ""}'
           });

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -9,6 +10,7 @@ import Link from "next/link";
 import { translations } from "@/lib/i18n/translations";
 
 export default function CartPage() {
+  const router = useRouter();
   const [cart, setCart] = useState<any[]>([]);
   const [customer, setCustomer] = useState({
     name: "",
@@ -62,8 +64,10 @@ export default function CartPage() {
   };
 
   const handleWhatsApp = () => {
+    const orderId = `IC-${Date.now().toString().slice(-6)}`;
     const message = encodeURIComponent(
       `${tp.waMessage} ${customer.name}\n\n` +
+      `📦 Sipariş No: ${orderId}\n` +
       `👤 Müşteri Bilgileri:\n` +
       `- Ad Soyad: ${customer.name}\n` +
       `- E-posta: ${customer.email}\n` +
@@ -72,7 +76,14 @@ export default function CartPage() {
       `💐 Sipariş Detayı:\n${cart.map(item => `- ${item.name} (${item.quantity} adet)`).join('\n')}\n\n` +
       `💰 Toplam: ${total.toLocaleString('tr-TR')} TL`
     );
+    
+    // Open WhatsApp in new tab
     window.open(`https://wa.me/${tp.supportPhone}?text=${message}`, '_blank');
+    
+    // Clear cart and redirect to success page
+    localStorage.removeItem("cart");
+    window.dispatchEvent(new Event("cartUpdated"));
+    router.push(`/order-success?orderId=${orderId}&total=${total}`);
   };
 
   return (
