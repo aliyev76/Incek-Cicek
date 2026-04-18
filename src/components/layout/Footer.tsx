@@ -89,9 +89,14 @@ const Footer = () => {
                 <MapPin size={20} className="text-primary shrink-0" />
                 <span className="leading-relaxed">Bağlarbaşı mah. Kızlarpınarı cad. 126/A<br />Keçiören, Ankara</span>
               </li>
-              <li className="flex items-center gap-4 font-black text-white text-lg">
-                <Phone size={20} className="text-primary shrink-0" />
-                <span>+90 541 109 09 41</span>
+              <li className="flex flex-col gap-4">
+                <div className="flex items-center gap-4 font-black text-white text-lg">
+                  <Phone size={20} className="text-primary shrink-0" />
+                  <span>0505 081 51 59</span>
+                </div>
+                <div className="flex items-center gap-4 text-xs text-white/40 font-bold ml-9">
+                  <span>Alternatif: +90 541 109 09 41</span>
+                </div>
               </li>
             </ul>
           </div>
