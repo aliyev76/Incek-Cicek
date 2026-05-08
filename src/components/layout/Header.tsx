@@ -8,6 +8,22 @@ import { translations } from "@/lib/i18n/translations";
 const Header = () => {
   const [cartCount, setCartCount] = React.useState(0);
 
+  const handleCallClick = () => {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      // General Event Tracking
+      (window as any).gtag('event', 'click_call_button', {
+        'event_category': 'Contact',
+        'event_label': 'Desktop_Header_Call'
+      });
+      // Google Ads Conversion Tracking
+      (window as any).gtag('event', 'conversion', {
+        'send_to': 'AW-18076783012/mhFACJL0xakcEKSj16tD',
+        'value': 1.0,
+        'currency': 'TRY'
+      });
+    }
+  };
+
   React.useEffect(() => {
     const updateCount = () => {
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -81,7 +97,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop Call to Action */}
-          <a href="tel:05050815159" className="hidden lg:flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all shadow-lg hover:shadow-green-600/30 group">
+          <a href="tel:05050815159" onClick={handleCallClick} className="hidden lg:flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all shadow-lg hover:shadow-green-600/30 group">
             <Phone size={18} fill="currentColor" className="group-hover:animate-bounce" />
             <span className="text-xs font-black uppercase tracking-widest">Tıkla Ara</span>
           </a>
