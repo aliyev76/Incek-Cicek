@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-
+import { FloatingCallButton } from "@/components/ui/FloatingCallButton";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -45,6 +45,7 @@ export default function RootLayout({
       </Script>
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground tracking-tight">
         {children}
+        <FloatingCallButton />
       </body>
     </html>
   );

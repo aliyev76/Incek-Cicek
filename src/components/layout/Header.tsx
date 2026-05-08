@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Search, ShoppingCart, User, Truck, Globe } from "lucide-react";
+import { Search, ShoppingCart, User, Truck, Globe, Phone } from "lucide-react";
 import { translations } from "@/lib/i18n/translations";
 
 const Header = () => {
@@ -20,14 +20,11 @@ const Header = () => {
 
   return (
     <header className="w-full flex flex-col font-sans sticky top-0 z-[60] glass">
-      {/* Top Bar - Minimalist Info Ticker */}
-      <div className="w-full bg-secondary py-1 overflow-hidden relative h-8 flex items-center">
-        <div className="flex whitespace-nowrap animate-marquee">
-          <span className="mx-8 text-[10px] uppercase tracking-[0.2em] font-medium text-white/80 flex items-center gap-2">
-             Ankara Merkez Çiçekçi • Güvenilir Online Ödeme • Ortalama 90 Dakika'da Teslim • Ücretsiz Teslimat • 12 Ay Taksit
-          </span>
-          <span className="mx-8 text-[10px] uppercase tracking-[0.2em] font-medium text-white/80">
-            • Size En Yakın Çiçekçi • Aynı Gün Hızlı Teslimat • Taze Çiçek Garantisi • %100 Müşteri Memnuniyeti
+      {/* Top Bar - Mother's Day Campaign */}
+      <div className="w-full bg-red-600 py-1.5 overflow-hidden relative h-auto md:h-10 flex items-center justify-center shadow-md z-50">
+        <div className="flex items-center justify-center text-center animate-pulse">
+          <span className="text-[11px] md:text-sm uppercase tracking-widest font-black text-white flex items-center gap-2">
+             💐 ANNELER GÜNÜNE ÖZEL 1 SAATTE TESLİMAT 💐
           </span>
         </div>
       </div>
@@ -82,6 +79,12 @@ const Header = () => {
           <Link href="/admin/login" className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted text-secondary hover:text-primary transition-all">
             <User size={20} />
           </Link>
+
+          {/* Desktop Call to Action */}
+          <a href="tel:05050815159" className="hidden lg:flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all shadow-lg hover:shadow-green-600/30 group">
+            <Phone size={18} fill="currentColor" className="group-hover:animate-bounce" />
+            <span className="text-xs font-black uppercase tracking-widest">Tıkla Ara</span>
+          </a>
           
           <button className="md:hidden p-2 text-secondary">
              <Search size={22} />
