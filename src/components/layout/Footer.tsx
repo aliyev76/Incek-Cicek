@@ -52,7 +52,7 @@ const Footer = () => {
               Ankara'nın doğasından ilham alan tasarımlarımızla sevdiklerinizin en özel anlarını ölümsüzleştiriyoruz. Sanatı çiçeklerle buluşturuyoruz.
             </p>
             <div className="flex gap-4">
-              <Link href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all text-white/70 hover:text-white">
+              <Link href="https://www.instagram.com/incekcicek?igsh=aTVkNXpzc2lkYXFk&utm_source=qr" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all text-white/70 hover:text-white">
                 <Instagram size={18} />
               </Link>
               <Link href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all text-white/70 hover:text-white">
